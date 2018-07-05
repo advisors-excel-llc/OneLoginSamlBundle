@@ -1,6 +1,6 @@
 <?php
 
-namespace Hslavich\OneloginSamlBundle\DependencyInjection\Security\Factory;
+namespace AE\OneLoginSamlBundle\DependencyInjection\Security\Factory;
 
 use Symfony\Bundle\SecurityBundle\DependencyInjection\Security\UserProvider\UserProviderFactoryInterface;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;

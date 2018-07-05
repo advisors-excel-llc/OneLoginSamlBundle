@@ -1,6 +1,6 @@
 <?php
 
-namespace Hslavich\OneloginSamlBundle\DependencyInjection\Security\Factory;
+namespace AE\OneLoginSamlBundle\DependencyInjection\Security\Factory;
 
 use Symfony\Bundle\SecurityBundle\DependencyInjection\Security\Factory\AbstractFactory;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

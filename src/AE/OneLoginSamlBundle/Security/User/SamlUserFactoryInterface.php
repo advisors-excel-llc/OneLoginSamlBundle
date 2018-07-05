@@ -1,8 +1,8 @@
 <?php
 
-namespace Hslavich\OneloginSamlBundle\Security\User;
+namespace AE\OneLoginSamlBundle\Security\User;
 
-use Hslavich\OneloginSamlBundle\Security\Authentication\Token\SamlTokenInterface;
+use AE\OneLoginSamlBundle\Security\Authentication\Token\SamlTokenInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 interface SamlUserFactoryInterface

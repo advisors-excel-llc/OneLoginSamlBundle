@@ -7,23 +7,23 @@ services:
         public: true
 
     hslavich_onelogin_saml.user_provider:
-        class: Hslavich\OneloginSamlBundle\Security\User\SamlUserProvider
+        class: AE\OneLoginSamlBundle\Security\User\SamlUserProvider
 
     hslavich_onelogin_saml.saml_provider:
-        class: Hslavich\OneloginSamlBundle\Security\Authentication\Provider\SamlProvider
+        class: AE\OneLoginSamlBundle\Security\Authentication\Provider\SamlProvider
         arguments: [""]
 
     hslavich_onelogin_saml.saml_token_factory:
-        class: Hslavich\OneloginSamlBundle\Security\Authentication\Token\SamlTokenFactory
+        class: AE\OneLoginSamlBundle\Security\Authentication\Token\SamlTokenFactory
 
     hslavich_onelogin_saml.saml_listener:
-        class: Hslavich\OneloginSamlBundle\Security\Firewall\SamlListener
+        class: AE\OneLoginSamlBundle\Security\Firewall\SamlListener
         parent: security.authentication.listener.abstract
         abstract: true
         calls:
             - [setOneLoginAuth, ["@onelogin_auth"]]
 
     hslavich_onelogin_saml.saml_logout:
-        class: Hslavich\OneloginSamlBundle\Security\Logout\SamlLogoutHandler
+        class: AE\OneLoginSamlBundle\Security\Logout\SamlLogoutHandler
         arguments:
             - "@onelogin_auth"

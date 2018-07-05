@@ -1,6 +1,6 @@
 <?php
 
-namespace Hslavich\OneloginSamlBundle\Security\User;
+namespace AE\OneLoginSamlBundle\Security\User;
 
 use Symfony\Component\Security\Core\User\UserInterface;
 

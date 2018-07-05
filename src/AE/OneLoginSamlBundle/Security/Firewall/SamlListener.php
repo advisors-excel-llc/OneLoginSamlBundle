@@ -1,8 +1,8 @@
 <?php
 
-namespace Hslavich\OneloginSamlBundle\Security\Firewall;
+namespace AE\OneLoginSamlBundle\Security\Firewall;
 
-use Hslavich\OneloginSamlBundle\Security\Authentication\Token\SamlToken;
+use AE\OneLoginSamlBundle\Security\Authentication\Token\SamlToken;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;

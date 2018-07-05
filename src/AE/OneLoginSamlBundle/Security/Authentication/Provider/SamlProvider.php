@@ -1,12 +1,12 @@
 <?php
 
-namespace Hslavich\OneloginSamlBundle\Security\Authentication\Provider;
+namespace AE\OneLoginSamlBundle\Security\Authentication\Provider;
 
-use Hslavich\OneloginSamlBundle\Security\Authentication\Token\SamlToken;
-use Hslavich\OneloginSamlBundle\Security\Authentication\Token\SamlTokenFactoryInterface;
-use Hslavich\OneloginSamlBundle\Security\Authentication\Token\SamlTokenInterface;
-use Hslavich\OneloginSamlBundle\Security\User\SamlUserFactoryInterface;
-use Hslavich\OneloginSamlBundle\Security\User\SamlUserInterface;
+use AE\OneLoginSamlBundle\Security\Authentication\Token\SamlToken;
+use AE\OneLoginSamlBundle\Security\Authentication\Token\SamlTokenFactoryInterface;
+use AE\OneLoginSamlBundle\Security\Authentication\Token\SamlTokenInterface;
+use AE\OneLoginSamlBundle\Security\User\SamlUserFactoryInterface;
+use AE\OneLoginSamlBundle\Security\User\SamlUserInterface;
 use Symfony\Component\Security\Core\Authentication\Provider\AuthenticationProviderInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;

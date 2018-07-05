@@ -1,6 +1,6 @@
 <?php
 
-namespace Hslavich\OneloginSamlBundle\Security\Authentication\Token;
+namespace AE\OneLoginSamlBundle\Security\Authentication\Token;
 
 use Symfony\Component\Security\Core\Authentication\Token\AbstractToken;
 

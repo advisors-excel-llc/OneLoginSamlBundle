@@ -1,6 +1,6 @@
 <?php
 
-namespace Hslavich\OneloginSamlBundle\DependencyInjection;
+namespace AE\OneLoginSamlBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -8,7 +8,8 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 /**
  * This is the class that validates and merges configuration from your app/config files
  *
- * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html#cookbook-bundles-extension-config-class}
+ * To learn more see
+ * {@link http://symfony.com/doc/current/cookbook/bundles/extension.html#cookbook-bundles-extension-config-class}
  */
 class Configuration implements ConfigurationInterface
 {
@@ -18,128 +19,180 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('hslavich_saml_sp');
+        $rootNode    = $treeBuilder->root('ae_saml_sp');
 
-        $rootNode
+        $rootNode->children()
+                     ->booleanNode('strict')->end()
+                     ->booleanNode('debug')->end()
+                     ->arrayPrototype()
+                         ->useAttributeAsKey('id')
+                         ->append($this->getIdpNode())
+                         ->append($this->getSpNode())
+                         ->append($this->getSecurityNode())
+                         ->append($this->getContactPersonNode())
+                         ->append($this->getOrganizationNode())
+                     ->end()
+                 ->end()
+        ;
+
+        return $treeBuilder;
+    }
+
+    protected function getIdpNode()
+    {
+        $builder = new TreeBuilder();
+        $node    = $builder->root('idp');
+
+        $node
             ->children()
-                ->booleanNode('strict')->end()
-                ->booleanNode('debug')->end()
-                ->arrayNode('idp')
+                ->scalarNode('entityId')->end()
+                ->scalarNode('x509cert')->end()
+                ->arrayNode('singleSignOnService')
                     ->children()
-                        ->scalarNode('entityId')->end()
-                        ->scalarNode('x509cert')->end()
-                        ->arrayNode('singleSignOnService')
-                            ->children()
-                                ->scalarNode('url')->end()
-                                ->scalarNode('binding')->end()
-                            ->end()
-                        ->end()
-                        ->arrayNode('singleLogoutService')
-                            ->children()
-                                ->scalarNode('url')->end()
-                                ->scalarNode('binding')->end()
-                            ->end()
-                        ->end()
-                        ->scalarNode('certFingerprint')->end()
-                        ->scalarNode('certFingerprintAlgorithm')->end()
-                        ->arrayNode('x509certMulti')
-                            ->children()
-                                ->arrayNode('signing')
-                                    ->prototype('scalar')->end()
-                                ->end()
-                                ->arrayNode('encryption')
-                                    ->prototype('scalar')->end()
-                                ->end()
-                            ->end()
-                        ->end()
+                        ->scalarNode('url')->end()
+                        ->scalarNode('binding')->end()
                     ->end()
                 ->end()
-                ->arrayNode('sp')
+                ->arrayNode('singleLogoutService')
                     ->children()
-                        ->scalarNode('entityId')->end()
-                        ->scalarNode('NameIDFormat')->end()
-                        ->scalarNode('x509cert')->end()
-                        ->scalarNode('privateKey')->end()
-                        ->arrayNode('assertionConsumerService')
-                            ->children()
-                                ->scalarNode('url')->end()
-                                ->scalarNode('binding')->end()
-                            ->end()
-                        ->end()
-                        ->arrayNode('attributeConsumingService')
-                            ->children()
-                                ->scalarNode('serviceName')->end()
-                                ->scalarNode('serviceDescription')->end()
-                                ->arrayNode('requestedAttributes')
-                                    ->prototype('array')
-                                        ->children()
-                                            ->scalarNode('name')->end()
-                                            ->booleanNode('isRequired')->defaultValue(false)->end()
-                                            ->scalarNode('nameFormat')->end()
-                                            ->scalarNode('friendlyName')->end()
-                                            ->arrayNode('attributeValue')->end()
-                                        ->end()
-                                    ->end()
-                                ->end()
-                            ->end()
-                        ->end()
-                        ->arrayNode('singleLogoutService')
-                            ->children()
-                                ->scalarNode('url')->end()
-                                ->scalarNode('binding')->end()
-                            ->end()
-                        ->end()
+                        ->scalarNode('url')->end()
+                        ->scalarNode('binding')->end()
                     ->end()
                 ->end()
-                ->arrayNode('security')
+                ->scalarNode('certFingerprint')->end()
+                ->scalarNode('certFingerprintAlgorithm')->end()
+                ->arrayNode('x509certMulti')
                     ->children()
-                        ->booleanNode('nameIdEncrypted')->end()
-                        ->booleanNode('authnRequestsSigned')->end()
-                        ->booleanNode('logoutRequestSigned')->end()
-                        ->booleanNode('logoutResponseSigned')->end()
-                        ->booleanNode('wantMessagesSigned')->end()
-                        ->booleanNode('wantAssertionsSigned')->end()
-                        ->booleanNode('wantAssertionsEncrypted')->end()
-                        ->booleanNode('wantNameId')->end()
-                        ->booleanNode('wantNameIdEncrypted')->end()
-                        ->booleanNode('requestedAuthnContext')->end()
-                        ->booleanNode('signMetadata')->end()
-                        ->booleanNode('wantXMLValidation')->end()
-                        ->booleanNode('lowercaseUrlencoding')->end()
-                        ->scalarNode('signatureAlgorithm')->end()
-                        ->scalarNode('digestAlgorithm')->end()
-                    ->end()
-                ->end()
-                ->arrayNode('contactPerson')
-                    ->children()
-                        ->arrayNode('technical')
-                            ->children()
-                                ->scalarNode('givenName')->end()
-                                ->scalarNode('emailAddress')->end()
-                            ->end()
+                        ->arrayNode('signing')
+                            ->prototype('scalar')->end()
                         ->end()
-                        ->arrayNode('support')
-                            ->children()
-                                ->scalarNode('givenName')->end()
-                                ->scalarNode('emailAddress')->end()
-                            ->end()
-                        ->end()
-                    ->end()
-                ->end()
-                ->arrayNode('organization')
-                    ->children()
-                        ->arrayNode('en')
-                            ->children()
-                                ->scalarNode('name')->end()
-                                ->scalarNode('displayname')->end()
-                                ->scalarNode('url')->end()
-                            ->end()
+                        ->arrayNode('encryption')
+                            ->prototype('scalar')->end()
                         ->end()
                     ->end()
                 ->end()
             ->end()
         ;
 
-        return $treeBuilder;
+        return $node;
+    }
+
+    protected function getSpNode()
+    {
+        $builder = new TreeBuilder();
+        $node    = $builder->root('sp');
+
+        $node
+            ->children()
+                ->scalarNode('entityId')->end()
+                ->scalarNode('NameIDFormat')->end()
+                ->scalarNode('x509cert')->end()
+                ->scalarNode('privateKey')->end()
+                ->arrayNode('assertionConsumerService')
+                    ->children()
+                        ->scalarNode('url')->end()
+                        ->scalarNode('binding')->end()
+                    ->end()
+                ->end()
+                ->arrayNode('attributeConsumingService')
+                    ->children()
+                        ->scalarNode('serviceName')->end()
+                        ->scalarNode('serviceDescription')->end()
+                        ->arrayNode('requestedAttributes')
+                            ->prototype('array')
+                                ->children()
+                                    ->scalarNode('name')->end()
+                                    ->booleanNode('isRequired')->defaultValue(false)->end()
+                                    ->scalarNode('nameFormat')->end()
+                                    ->scalarNode('friendlyName')->end()
+                                    ->arrayNode('attributeValue')->end()
+                                ->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
+                ->arrayNode('singleLogoutService')
+                    ->children()
+                        ->scalarNode('url')->end()
+                        ->scalarNode('binding')->end()
+                    ->end()
+                ->end()
+            ->end()
+        ;
+
+        return $node;
+    }
+
+    protected function getSecurityNode()
+    {
+        $builder = new TreeBuilder();
+        $node    = $builder->root('security');
+
+        $node
+            ->children()
+                ->booleanNode('nameIdEncrypted')->end()
+                ->booleanNode('authnRequestsSigned')->end()
+                ->booleanNode('logoutRequestSigned')->end()
+                ->booleanNode('logoutResponseSigned')->end()
+                ->booleanNode('wantMessagesSigned')->end()
+                ->booleanNode('wantAssertionsSigned')->end()
+                ->booleanNode('wantAssertionsEncrypted')->end()
+                ->booleanNode('wantNameId')->end()
+                ->booleanNode('wantNameIdEncrypted')->end()
+                ->booleanNode('requestedAuthnContext')->end()
+                ->booleanNode('signMetadata')->end()
+                ->booleanNode('wantXMLValidation')->end()
+                ->booleanNode('lowercaseUrlencoding')->end()
+                ->scalarNode('signatureAlgorithm')->end()
+                ->scalarNode('digestAlgorithm')->end()
+            ->end()
+        ;
+
+        return $node;
+    }
+
+    protected function getContactPersonNode()
+    {
+        $builder = new TreeBuilder();
+        $node    = $builder->root('security');
+
+        $node
+            ->children()
+                ->arrayNode('technical')
+                    ->children()
+                        ->scalarNode('givenName')->end()
+                        ->scalarNode('emailAddress')->end()
+                    ->end()
+                ->end()
+                ->arrayNode('support')
+                    ->children()
+                        ->scalarNode('givenName')->end()
+                        ->scalarNode('emailAddress')->end()
+                    ->end()
+                ->end()
+            ->end()
+        ;
+
+        return $node;
+    }
+
+    protected function getOrganizationNode()
+    {
+        $builder = new TreeBuilder();
+        $node    = $builder->root('organization');
+
+        $node
+            ->children()
+                ->arrayNode('en')
+                    ->children()
+                        ->scalarNode('name')->end()
+                        ->scalarNode('displayname')->end()
+                        ->scalarNode('url')->end()
+                    ->end()
+                ->end()
+            ->end()
+        ;
+
+        return $node;
     }
 }

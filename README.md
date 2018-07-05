@@ -1,11 +1,5 @@
 # OneloginSamlBundle
-OneLogin SAML Bundle for Symfony2. (https://github.com/onelogin/php-saml)
-
-[![Build Status](https://travis-ci.org/hslavich/OneloginSamlBundle.svg?branch=master)](https://travis-ci.org/hslavich/OneloginSamlBundle)
-[![Coverage Status](https://coveralls.io/repos/github/hslavich/OneloginSamlBundle/badge.svg?branch=master)](https://coveralls.io/github/hslavich/OneloginSamlBundle?branch=master)
-[![Latest Stable Version](https://poser.pugx.org/hslavich/oneloginsaml-bundle/v/stable)](https://packagist.org/packages/hslavich/oneloginsaml-bundle)  [![Latest Unstable Version](https://poser.pugx.org/hslavich/oneloginsaml-bundle/v/unstable)](https://packagist.org/packages/hslavich/oneloginsaml-bundle) [![Total Downloads](https://poser.pugx.org/hslavich/oneloginsaml-bundle/downloads)](https://packagist.org/packages/hslavich/oneloginsaml-bundle)
-
-[![SensioLabsInsight](https://insight.sensiolabs.com/projects/d74ae361-ef8d-437e-b8d6-a8627491ccfa/big.png)](https://insight.sensiolabs.com/projects/d74ae361-ef8d-437e-b8d6-a8627491ccfa)
+OneLogin SAML Bundle for Symfony. (https://github.com/onelogin/php-saml)
 
 Installation
 ------------
@@ -13,20 +7,20 @@ Installation
 Install with composer
 ``` json
 "require": {
-    "hslavich/oneloginsaml-bundle": "dev-master"
+    "ae/oneloginsaml-bundle": "dev-master"
 }
 ```
 
 Run composer update
 ``` bash
-composer update hslavich/oneloginsaml-bundle
+composer update ae/oneloginsaml-bundle
 ```
 
 Enable the bundle in `app/AppKernel.php`
 ``` php
 $bundles = array(
     // ...
-    new Hslavich\OneloginSamlBundle\HslavichOneloginSamlBundle(),
+    new AE\OneLoginSamlBundle\HslavichOneloginSamlBundle(),
 )
 ```
 
@@ -35,51 +29,52 @@ Configuration
 
 Configure SAML metadata in `app/config/config.yml`. Check https://github.com/onelogin/php-saml#settings for more info.
 ``` yml
-hslavich_onelogin_saml:
-    # Basic settings
-    idp:
-        entityId: 'http://id.example.com/saml2/idp/metadata.php'
-        singleSignOnService:
-            url: 'http://id.example.com/saml2/idp/SSOService.php'
-            binding: 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect'
-        singleLogoutService:
-            url: 'http://id.example.com/saml2/idp/SingleLogoutService.php'
-            binding: 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect'
-        x509cert: ''
-    sp:
-        entityId: 'http://myapp.com/app_dev.php/saml/metadata'
-        assertionConsumerService:
-            url: 'http://myapp.com/app_dev.php/saml/acs'
-            binding: 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST'
-        singleLogoutService:
-            url: 'http://myapp.com/app_dev.php/saml/logout'
-            binding: 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect'
-    # Optional settings
-    security:
-        nameIdEncrypted:       false
-        authnRequestsSigned:   false
-        logoutRequestSigned:   false
-        logoutResponseSigned:  false
-        wantMessagesSigned:    false
-        wantAssertionsSigned:  false
-        wantNameIdEncrypted:   false
-        requestedAuthnContext: true
-        signMetadata: false
-        wantXMLValidation: true
-        signatureAlgorithm: 'http://www.w3.org/2000/09/xmldsig#rsa-sha1'
-        digestAlgorithm: 'http://www.w3.org/2000/09/xmldsig#sha1'
-    contactPerson:
-        technical:
-            givenName: 'Tech User'
-            emailAddress: 'techuser@example.com'
-        support:
-            givenName: 'Support User'
-            emailAddress: 'supportuser@example.com'
-    organization:
-        en:
-            name: 'Example'
-            displayname: 'Example'
-            url: 'http://example.com'
+ae_onelogin_saml:
+    default:
+        # Basic settings
+        idp:
+            entityId: 'http://id.example.com/saml2/idp/metadata.php'
+            singleSignOnService:
+                url: 'http://id.example.com/saml2/idp/SSOService.php'
+                binding: 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect'
+            singleLogoutService:
+                url: 'http://id.example.com/saml2/idp/SingleLogoutService.php'
+                binding: 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect'
+            x509cert: ''
+        sp:
+            entityId: 'http://myapp.com/app_dev.php/saml/metadata'
+            assertionConsumerService:
+                url: 'http://myapp.com/app_dev.php/saml/acs'
+                binding: 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST'
+            singleLogoutService:
+                url: 'http://myapp.com/app_dev.php/saml/logout'
+                binding: 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect'
+        # Optional settings
+        security:
+            nameIdEncrypted:       false
+            authnRequestsSigned:   false
+            logoutRequestSigned:   false
+            logoutResponseSigned:  false
+            wantMessagesSigned:    false
+            wantAssertionsSigned:  false
+            wantNameIdEncrypted:   false
+            requestedAuthnContext: true
+            signMetadata: false
+            wantXMLValidation: true
+            signatureAlgorithm: 'http://www.w3.org/2000/09/xmldsig#rsa-sha1'
+            digestAlgorithm: 'http://www.w3.org/2000/09/xmldsig#sha1'
+        contactPerson:
+            technical:
+                givenName: 'Tech User'
+                emailAddress: 'techuser@example.com'
+            support:
+                givenName: 'Support User'
+                emailAddress: 'supportuser@example.com'
+        organization:
+            en:
+                name: 'Example'
+                displayname: 'Example'
+                url: 'http://example.com'
 ```
 
 If you don't want to set contactPerson or organization, don't add those parameters instead of leaving them blank.
@@ -117,7 +112,7 @@ security:
 
 Edit your `app/config/routing`
 ``` yml
-hslavich_saml_sp:
+ae_saml_sp:
     resource: "@HslavichOneloginSamlBundle/Resources/config/routing.yml"
 ```
 
@@ -130,7 +125,7 @@ Your user class must implement `SamlUserInterface`
 
 namespace AppBundle\Entity;
 
-use Hslavich\OneloginSamlBundle\Security\User\SamlUserInterface;
+use AE\OneLoginSamlBundle\Security\User\SamlUserInterface;
 
 class User implements SamlUserInterface
 {
@@ -217,7 +212,7 @@ Create the user factory service editing `services.yml`:
 ``` yml
 services:
     my_user_factory:
-        class: Hslavich\OneloginSamlBundle\Security\User\SamlUserFactory
+        class: AE\OneLoginSamlBundle\Security\User\SamlUserFactory
         arguments:
             # User class
             - AppBundle\Entity\User
@@ -239,8 +234,8 @@ Or you can create your own User Factory that implements `SamlUserFactoryInterfac
 namespace AppBundle\Security;
 
 use AppBundle\Entity\User;
-use Hslavich\OneloginSamlBundle\Security\Authentication\Token\SamlTokenInterface;
-use Hslavich\OneloginSamlBundle\Security\User\SamlUserFactoryInterface;
+use AE\OneLoginSamlBundle\Security\Authentication\Token\SamlTokenInterface;
+use AE\OneLoginSamlBundle\Security\User\SamlUserFactoryInterface;
 
 class UserFactory implements SamlUserFactoryInterface
 {

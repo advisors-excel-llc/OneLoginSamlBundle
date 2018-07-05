@@ -1,14 +1,14 @@
 <?php
 
-namespace Hslavich\OneloginSamlBundle;
+namespace AE\OneLoginSamlBundle;
 
-use Hslavich\OneloginSamlBundle\DependencyInjection\Compiler\SecurityCompilerPass;
-use Hslavich\OneloginSamlBundle\DependencyInjection\Security\Factory\SamlFactory;
-use Hslavich\OneloginSamlBundle\DependencyInjection\Security\Factory\SamlUserProviderFactory;
+use AE\OneLoginSamlBundle\DependencyInjection\Compiler\SecurityCompilerPass;
+use AE\OneLoginSamlBundle\DependencyInjection\Security\Factory\SamlFactory;
+use AE\OneLoginSamlBundle\DependencyInjection\Security\Factory\SamlUserProviderFactory;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class HslavichOneloginSamlBundle extends Bundle
+class AEOneLoginSamlBundle extends Bundle
 {
     public function build(ContainerBuilder $container)
     {

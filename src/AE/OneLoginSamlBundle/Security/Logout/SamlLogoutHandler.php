@@ -1,8 +1,8 @@
 <?php
 
-namespace Hslavich\OneloginSamlBundle\Security\Logout;
+namespace AE\OneLoginSamlBundle\Security\Logout;
 
-use Hslavich\OneloginSamlBundle\Security\Authentication\Token\SamlTokenInterface;
+use AE\OneLoginSamlBundle\Security\Authentication\Token\SamlTokenInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;

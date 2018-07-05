@@ -1,15 +1,23 @@
 saml_metadata:
     path:     /saml/metadata
-    defaults: { _controller: HslavichOneloginSamlBundle:Saml:metadata }
+    defaults:
+        _controller: AEOneLoginSamlBundle:Saml:metadata
+        saml: 'default'
 
 saml_acs:
     path:     /saml/acs
-    defaults: { _controller: HslavichOneloginSamlBundle:Saml:assertionConsumerService }
+    defaults:
+        _controller: AEOneLoginSamlBundle:Saml:assertionConsumerService
+        saml: 'default'
 
 saml_login:
     path:     /saml/login
-    defaults: { _controller: HslavichOneloginSamlBundle:Saml:login }
+    defaults:
+        _controller: AEOneLoginSamlBundle:Saml:login
+        saml: 'default'
 
 saml_logout:
     path:     /saml/logout
-    defaults: { _controller: HslavichOneloginSamlBundle:Saml:singleLogoutService }
+    defaults:
+        _controller: AEOneLoginSamlBundle:Saml:singleLogoutService
+        saml: 'default'

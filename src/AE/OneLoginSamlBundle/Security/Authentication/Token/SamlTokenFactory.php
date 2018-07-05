@@ -1,6 +1,6 @@
 <?php
 
-namespace Hslavich\OneloginSamlBundle\Security\Authentication\Token;
+namespace AE\OneLoginSamlBundle\Security\Authentication\Token;
 
 class SamlTokenFactory implements SamlTokenFactoryInterface
 {

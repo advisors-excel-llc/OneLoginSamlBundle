@@ -21,18 +21,19 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode    = $treeBuilder->root('ae_saml_sp');
 
-        $rootNode->children()
-                     ->booleanNode('strict')->end()
-                     ->booleanNode('debug')->end()
-                     ->arrayPrototype()
-                         ->useAttributeAsKey('id')
-                         ->append($this->getIdpNode())
-                         ->append($this->getSpNode())
-                         ->append($this->getSecurityNode())
-                         ->append($this->getContactPersonNode())
-                         ->append($this->getOrganizationNode())
-                     ->end()
-                 ->end()
+        $rootNode
+            ->useAttributeAsKey('id')
+            ->arrayPrototype()
+                ->children()
+                    ->booleanNode('strict')->end()
+                    ->booleanNode('debug')->end()
+                    ->append($this->getIdpNode())
+                    ->append($this->getSpNode())
+                    ->append($this->getSecurityNode())
+                    ->append($this->getContactPersonNode())
+                    ->append($this->getOrganizationNode())
+                ->end()
+            ->end()
         ;
 
         return $treeBuilder;

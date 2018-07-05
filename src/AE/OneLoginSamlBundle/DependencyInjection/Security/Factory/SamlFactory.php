@@ -12,6 +12,7 @@ class SamlFactory extends AbstractFactory
 {
     public function __construct()
     {
+        $this->addOption('config', 'default');
         $this->addOption('username_attribute');
         $this->addOption('check_path', '/saml/acs');
         $this->addOption('user_factory');
@@ -32,14 +33,20 @@ class SamlFactory extends AbstractFactory
         return 'pre_auth';
     }
 
+    /**
+     * @return string
+     */
     public function getKey()
     {
         return 'saml';
     }
 
+    /**
+     * @return string
+     */
     protected function getListenerId()
     {
-        return 'hslavich_onelogin_saml.saml_listener';
+        return 'ae_onelogin_saml.saml_listener';
     }
 
     /**
@@ -47,45 +54,73 @@ class SamlFactory extends AbstractFactory
      * AuthenticationProviderInterface.
      *
      * @param ContainerBuilder $container
-     * @param string $id The unique id of the firewall
-     * @param array $config The options array for this listener
+     * @param string $id             The unique id of the firewall
+     * @param array $config          The options array for this listener
      * @param string $userProviderId The id of the user provider
      *
      * @return string never null, the id of the authentication provider
      */
     protected function createAuthProvider(ContainerBuilder $container, $id, $config, $userProviderId)
     {
-        $providerId = 'security.authentication.provider.saml.'.$id;
+        $providerId          = 'security.authentication.provider.saml.'.$id;
         $definitionClassname = $this->getDefinitionClassname();
-        $definition = $container->setDefinition($providerId, new $definitionClassname('hslavich_onelogin_saml.saml_provider'))
-            ->replaceArgument(0, new Reference($userProviderId))
-            ->addArgument(array(
-                 'persist_user' => $config['persist_user']
-            ))
-            ->addTag('hslavich.saml_provider')
+        $definition          = $container->setDefinition(
+            $providerId,
+            new $definitionClassname('hslavich_onelogin_saml.saml_provider')
+        )
+                                         ->replaceArgument(0, new Reference($userProviderId))
+                                         ->addArgument(
+                                             [
+                                                 'persist_user' => $config['persist_user'],
+                                             ]
+                                         )
+                                         ->addTag('ae.saml_provider')
         ;
 
         if ($config['user_factory']) {
-            $definition->addMethodCall('setUserFactory', array(new Reference($config['user_factory'])));
+            $definition->addMethodCall('setUserFactory', [new Reference($config['user_factory'])]);
         }
 
-        $factoryId = $config['token_factory'] ?: 'hslavich_onelogin_saml.saml_token_factory';
-        $definition->addMethodCall('setTokenFactory', array(new Reference($factoryId)));
+        $factoryId = $config['token_factory'] ?: 'ae_onelogin_saml.saml_token_factory';
+        $definition->addMethodCall('setTokenFactory', [new Reference($factoryId)]);
 
         return $providerId;
-     }
+    }
 
+    /**
+     * @param ContainerBuilder $container
+     * @param $id
+     * @param $config
+     * @param $userProvider
+     *
+     * @return string
+     */
     protected function createListener($container, $id, $config, $userProvider)
     {
+        $config['check_path'] = "/saml/${config['config']}/acs";
+        $config['login_path'] = "/saml/${config['config']}/login";
+
         $listenerId = parent::createListener($container, $id, $config, $userProvider);
         $this->createLogoutHandler($container, $id, $config);
+
+        $container->getDefinition($listenerId)
+                  ->addMethodCall('setOneLoginAuth', ["ae_onelogin_saml.${config['config']}.auth"])
+        ;
 
         return $listenerId;
     }
 
+    /**
+     * @param ContainerBuilder $container
+     * @param string $id
+     * @param array $config
+     * @param string $defaultEntryPoint
+     *
+     * @return string
+     */
     protected function createEntryPoint($container, $id, $config, $defaultEntryPoint)
     {
-        $entryPointId = 'security.authentication.form_entry_point.'.$id;
+        $entryPointId        = 'security.authentication.form_entry_point.'.$id;
         $definitionClassname = $this->getDefinitionClassname();
         $container
             ->setDefinition($entryPointId, new $definitionClassname('security.authentication.form_entry_point'))
@@ -97,20 +132,29 @@ class SamlFactory extends AbstractFactory
         return $entryPointId;
     }
 
+    /**
+     * @param $container
+     * @param $id
+     * @param $config
+     */
     protected function createLogoutHandler($container, $id, $config)
     {
         if ($container->hasDefinition('security.logout_listener.'.$id)) {
             $logoutListener = $container->getDefinition('security.logout_listener.'.$id);
-            $samlListenerId = 'hslavich_onelogin_saml.saml_logout';
+            $samlListenerId = "ae_onelogin_saml.${config['config']}.saml_logout";
 
             $definitionClassname = $this->getDefinitionClassname();
             $container
                 ->setDefinition($samlListenerId, new $definitionClassname('saml.security.http.logout'))
-                ->replaceArgument(2, array_intersect_key($config, $this->options));
-            $logoutListener->addMethodCall('addHandler', array(new Reference($samlListenerId)));
+                ->replaceArgument(2, array_intersect_key($config, $this->options))
+            ;
+            $logoutListener->addMethodCall('addHandler', [new Reference($samlListenerId)]);
         }
     }
 
+    /**
+     * @return string
+     */
     private function getDefinitionClassname()
     {
         return class_exists(ChildDefinition::class) ? ChildDefinition::class : DefinitionDecorator::class;

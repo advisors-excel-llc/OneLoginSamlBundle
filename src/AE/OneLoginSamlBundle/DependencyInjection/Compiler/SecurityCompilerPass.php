@@ -11,9 +11,15 @@ class SecurityCompilerPass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
         if ($container->hasDefinition('doctrine.orm.default_entity_manager')) {
-            foreach ($container->findTaggedServiceIds('hslavich.saml_provider') as $id => $tags) {
-                $container->getDefinition($id)->addMethodCall('setEntityManager', array(new Reference('doctrine.orm.default_entity_manager')));
+            foreach (array_keys($container->findTaggedServiceIds('ae.saml_provider')) as $id) {
+                $container->getDefinition($id)
+                          ->addMethodCall(
+                              'setEntityManager',
+                              array(new Reference('doctrine.orm.default_entity_manager'))
+                          );
             }
         }
     }
+
+
 }

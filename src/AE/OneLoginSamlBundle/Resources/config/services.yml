@@ -1,29 +1,21 @@
 parameters:
 
 services:
-    onelogin_auth:
-        class: OneLogin_Saml2_Auth
-        arguments: [ "%hslavich_onelogin_saml.settings%"]
-        public: true
+    #onelogin_auth:
+    #    class: OneLogin_Saml2_Auth
+    #    arguments: [ "%hslavich_onelogin_saml.settings%"]
+    #    public: true
 
-    hslavich_onelogin_saml.user_provider:
+    ae_onelogin_saml.user_provider:
         class: AE\OneLoginSamlBundle\Security\User\SamlUserProvider
 
-    hslavich_onelogin_saml.saml_provider:
+    ae_onelogin_saml.saml_provider:
         class: AE\OneLoginSamlBundle\Security\Authentication\Provider\SamlProvider
-        arguments: [""]
 
-    hslavich_onelogin_saml.saml_token_factory:
+    ae_onelogin_saml.saml_token_factory:
         class: AE\OneLoginSamlBundle\Security\Authentication\Token\SamlTokenFactory
 
-    hslavich_onelogin_saml.saml_listener:
+    ae_onelogin_saml.saml_listener:
         class: AE\OneLoginSamlBundle\Security\Firewall\SamlListener
         parent: security.authentication.listener.abstract
         abstract: true
-        calls:
-            - [setOneLoginAuth, ["@onelogin_auth"]]
-
-    hslavich_onelogin_saml.saml_logout:
-        class: AE\OneLoginSamlBundle\Security\Logout\SamlLogoutHandler
-        arguments:
-            - "@onelogin_auth"

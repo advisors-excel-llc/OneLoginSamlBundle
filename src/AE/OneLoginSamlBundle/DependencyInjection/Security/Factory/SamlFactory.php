@@ -66,7 +66,7 @@ class SamlFactory extends AbstractFactory
         $definitionClassname = $this->getDefinitionClassname();
         $definition          = $container->setDefinition(
             $providerId,
-            new $definitionClassname('hslavich_onelogin_saml.saml_provider')
+            new $definitionClassname('ae_onelogin_saml.saml_provider')
         )
                                          ->replaceArgument(0, new Reference($userProviderId))
                                          ->addArgument(

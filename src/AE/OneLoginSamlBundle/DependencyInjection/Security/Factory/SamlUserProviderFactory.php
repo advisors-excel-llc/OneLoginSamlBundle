@@ -16,7 +16,7 @@ class SamlUserProviderFactory implements UserProviderFactoryInterface
     {
         $definitionClassname = $this->getDefinitionClassname();
         $container
-            ->setDefinition($id, new $definitionClassname('hslavich_onelogin_saml.user_provider'))
+            ->setDefinition($id, new $definitionClassname('ae_onelogin_saml.user_provider'))
             ->addArgument($config['user_class'])
             ->addArgument($config['default_roles'])
         ;

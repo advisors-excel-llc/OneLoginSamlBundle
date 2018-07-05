@@ -1,11 +1,6 @@
 parameters:
 
 services:
-    #onelogin_auth:
-    #    class: OneLogin_Saml2_Auth
-    #    arguments: [ "%hslavich_onelogin_saml.settings%"]
-    #    public: true
-
     ae_onelogin_saml.user_provider:
         class: AE\OneLoginSamlBundle\Security\User\SamlUserProvider
 

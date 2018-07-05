@@ -19,7 +19,7 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode    = $treeBuilder->root('ae_saml_sp');
+        $rootNode    = $treeBuilder->root('ae_onelogin_saml');
 
         $rootNode
             ->arrayPrototype()

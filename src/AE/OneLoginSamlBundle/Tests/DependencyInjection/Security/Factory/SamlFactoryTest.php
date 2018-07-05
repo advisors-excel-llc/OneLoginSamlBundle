@@ -51,7 +51,13 @@ class SamlFactoryTest extends \PHPUnit_Framework_TestCase
 
         $tests[] = [
             [
-                'config' => 'default'
+                'config'             => 'default',
+                'username_attribute' => null,
+                'login_path'         => '/saml/login',
+                'check_path'         => '/saml/acs',
+                'user_factory'       => null,
+                'token_factory'      => null,
+                'persist_user'       => false,
             ],
             [
                 'config'             => 'default',

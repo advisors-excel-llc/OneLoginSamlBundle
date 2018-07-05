@@ -34,8 +34,6 @@ class AEOneLoginSamlExtension extends Extension
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
-
-        $container->setParameter('ae_onelogin_saml.settings', $config);
     }
 
     private function createOneLoginAuth(ContainerBuilder $container, array $config)

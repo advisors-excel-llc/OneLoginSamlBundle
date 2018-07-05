@@ -14,12 +14,12 @@ class SamlFactory extends AbstractFactory
     {
         $this->addOption('config', 'default');
         $this->addOption('username_attribute');
-        $this->addOption('check_path', '/saml/acs');
+        $this->addOption('check_path');
         $this->addOption('user_factory');
         $this->addOption('token_factory');
         $this->addOption('persist_user', false);
 
-        $this->defaultFailureHandlerOptions['login_path'] = '/saml/login';
+        $this->defaultFailureHandlerOptions['login_path'];
     }
 
     /**
@@ -97,8 +97,13 @@ class SamlFactory extends AbstractFactory
      */
     protected function createListener($container, $id, $config, $userProvider)
     {
-        $config['check_path'] = "/saml/${config['config']}/acs";
-        $config['login_path'] = "/saml/${config['config']}/login";
+        if (!array_key_exists('check_path', $config) || strlen($config['check_path']) == 0) {
+            $config['check_path'] = "/saml/${config['config']}/acs";
+        }
+
+        if (!array_key_exists('login_path', $config) || strlen($config['login_path']) == 0) {
+            $config['login_path'] = "/saml/${config['config']}/login";
+        }
 
         $listenerId = parent::createListener($container, $id, $config, $userProvider);
         $this->createLogoutHandler($container, $id, $config);

@@ -2,9 +2,7 @@
 
 namespace AE\OneLoginSamlBundle\DependencyInjection;
 
-use AE\OneLoginSamlBundle\Security\Firewall\SamlListener;
 use AE\OneLoginSamlBundle\Security\Logout\SamlLogoutHandler;
-use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Definition;

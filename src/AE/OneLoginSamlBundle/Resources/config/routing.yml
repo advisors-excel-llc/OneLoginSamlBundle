@@ -1,23 +1,43 @@
-saml_metadata:
+saml_default_metadata:
     path:     /saml/metadata
     defaults:
         _controller: AEOneLoginSamlBundle:Saml:metadata
         saml: 'default'
 
-saml_acs:
+saml_default_acs:
     path:     /saml/acs
     defaults:
         _controller: AEOneLoginSamlBundle:Saml:assertionConsumerService
         saml: 'default'
 
-saml_login:
+saml_default_login:
     path:     /saml/login
     defaults:
         _controller: AEOneLoginSamlBundle:Saml:login
         saml: 'default'
 
-saml_logout:
+saml_default_logout:
     path:     /saml/logout
     defaults:
         _controller: AEOneLoginSamlBundle:Saml:singleLogoutService
         saml: 'default'
+
+saml_metadata:
+    path:     /saml/{saml}/metadata
+    defaults:
+        _controller: AEOneLoginSamlBundle:Saml:metadata
+
+saml_acs:
+    path:     /saml/{saml}/acs
+    defaults:
+        _controller: AEOneLoginSamlBundle:Saml:assertionConsumerService
+
+saml_login:
+    path:     /saml/{saml}/login
+    defaults:
+        _controller: AEOneLoginSamlBundle:Saml:login
+
+saml_logout:
+    path:     /saml/{saml}/logout
+    defaults:
+        _controller: AEOneLoginSamlBundle:Saml:singleLogoutService

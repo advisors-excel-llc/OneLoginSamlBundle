@@ -183,13 +183,13 @@ security:
                 always_use_default_target_path: true
 
             logout:
-                path: /saml/logout
+                path: /saml/default/logout
 ```
 
 Then you can add a link to route `saml_login` in your login page in order to start SAML sign on.
 
 ``` html
-    <a href="{{ path('saml_login') }}">SAML Login</a>
+    <a href="{{ path('saml_login', {saml: 'default'}) }}">SAML Login</a>
 ```
 
 Just-in-time user provisioning (optional)

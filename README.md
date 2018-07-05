@@ -20,7 +20,7 @@ Enable the bundle in `app/AppKernel.php`
 ``` php
 $bundles = array(
     // ...
-    new AE\OneLoginSamlBundle\HslavichOneloginSamlBundle(),
+    new AE\OneLoginSamlBundle\AEOneLoginSamlBundle(),
 )
 ```
 
@@ -30,6 +30,7 @@ Configuration
 Configure SAML metadata in `app/config/config.yml`. Check https://github.com/onelogin/php-saml#settings for more info.
 ``` yml
 ae_onelogin_saml:
+    # default is the config name, but can be anything. This is used in firewall and route config
     default:
         # Basic settings
         idp:
@@ -96,24 +97,28 @@ security:
             pattern:    ^/
             anonymous: true
             saml:
+                # Tell the firewall which SAML config to use, defaults to 'default'
+                config: default
                 # Match SAML attribute 'uid' with username.
                 # Uses getNameId() method by default.
-                username_attribute: uid
-                check_path: /saml/acs
-                login_path: /saml/login
+                username_attribute: 
+                # check_path and login_path don't need to be specified unless overridding
+                # check_path: /saml/default/acs
+                # login_path: /saml/default/login
             logout:
-                path: /saml/logout
+                # Path should be /saml/[CONFIG NAME]/logout
+                path: /saml/default/logout
 
     access_control:
-        - { path: ^/saml/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/saml/metadata, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/saml/default/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/saml/default/metadata, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/, roles: ROLE_USER }
 ```
 
 Edit your `app/config/routing`
 ``` yml
 ae_saml_sp:
-    resource: "@HslavichOneloginSamlBundle/Resources/config/routing.yml"
+    resource: "@AEOneLoginSamlBundle/Resources/config/routing.yml"
 ```
 
 Inject SAML attributes into User object (Optional)
@@ -164,9 +169,10 @@ security:
         default:
             anonymous: ~
             saml:
+                # Tell the firewall which SAML Config you want to use (defaults to 'default')
+                config: default
                 username_attribute: uid
-                check_path: /saml/acs
-                login_path: /saml/login
+                # No need to specify check_path and login_path, they're set based on config name
                 failure_path: /login
                 always_use_default_target_path: true
 
@@ -198,6 +204,8 @@ firewalls:
     default:
         anonymous: ~
         saml:
+            # Tell the firewall which config to use (default is the default)
+            config: default
             username_attribute: uid
             # User factory service
             user_factory: my_user_factory

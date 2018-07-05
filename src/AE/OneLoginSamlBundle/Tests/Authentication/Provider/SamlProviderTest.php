@@ -1,9 +1,10 @@
 <?php
 
-namespace Hslavich\OneloginSamlBundle\Tests\Authentication\Provider;
+namespace AE\OneLoginSamlBundle\Tests\Authentication\Provider;
 
-use Hslavich\OneloginSamlBundle\Security\Authentication\Provider\SamlProvider;
-use Hslavich\OneloginSamlBundle\Security\Authentication\Token\SamlTokenFactory;
+use AE\OneLoginSamlBundle\Security\Authentication\Provider\SamlProvider;
+use AE\OneLoginSamlBundle\Security\Authentication\Token\SamlToken;
+use AE\OneLoginSamlBundle\Security\Authentication\Token\SamlTokenFactory;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 
 class SamlProviderTest extends \PHPUnit_Framework_TestCase
@@ -12,7 +13,7 @@ class SamlProviderTest extends \PHPUnit_Framework_TestCase
     {
         $provider = $this->getProvider();
 
-        $this->assertTrue($provider->supports($this->createMock('Hslavich\OneloginSamlBundle\Security\Authentication\Token\SamlToken')));
+        $this->assertTrue($provider->supports($this->createMock('AE\OneLoginSamlBundle\Security\Authentication\Token\SamlToken')));
         $this->assertFalse($provider->supports($this->createMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface')));
     }
 
@@ -24,7 +25,7 @@ class SamlProviderTest extends \PHPUnit_Framework_TestCase
         $provider = $this->getProvider($user);
         $token = $provider->authenticate($this->getSamlToken());
 
-        $this->assertInstanceOf('Hslavich\\OneloginSamlBundle\\Security\\Authentication\\Token\\SamlToken', $token);
+        $this->assertInstanceOf(SamlToken::class, $token);
         $this->assertEquals(array('foo' => 'bar'), $token->getAttributes());
         $this->assertEquals(array(), $token->getRoles());
         $this->assertTrue($token->isAuthenticated());
@@ -45,13 +46,13 @@ class SamlProviderTest extends \PHPUnit_Framework_TestCase
         $user = $this->createMock('Symfony\Component\Security\Core\User\UserInterface');
         $user->expects($this->once())->method('getRoles')->willReturn(array());
 
-        $userFactory = $this->createMock('Hslavich\OneloginSamlBundle\Security\User\SamlUserFactoryInterface');
+        $userFactory = $this->createMock('AE\OneLoginSamlBundle\Security\User\SamlUserFactoryInterface');
         $userFactory->expects($this->once())->method('createUser')->willReturn($user);
 
         $provider = $this->getProvider(null, $userFactory);
         $token = $provider->authenticate($this->getSamlToken());
 
-        $this->assertInstanceOf('Hslavich\\OneloginSamlBundle\\Security\\Authentication\\Token\\SamlToken', $token);
+        $this->assertInstanceOf(SamlToken::class, $token);
         $this->assertEquals(array('foo' => 'bar'), $token->getAttributes());
         $this->assertEquals(array(), $token->getRoles());
         $this->assertTrue($token->isAuthenticated());
@@ -60,7 +61,7 @@ class SamlProviderTest extends \PHPUnit_Framework_TestCase
 
     public function testSamlAttributesInjection()
     {
-        $user = $this->createMock('Hslavich\OneloginSamlBundle\Security\User\SamlUserInterface');
+        $user = $this->createMock('AE\OneLoginSamlBundle\Security\User\SamlUserInterface');
         $user->expects($this->once())->method('getRoles')->willReturn(array());
         $user->expects($this->once())->method('setSamlAttributes')->with($this->equalTo(array('foo' => 'bar')));
 
@@ -73,7 +74,7 @@ class SamlProviderTest extends \PHPUnit_Framework_TestCase
         $user = $this->createMock('Symfony\Component\Security\Core\User\UserInterface');
         $user->expects($this->once())->method('getRoles')->willReturn(array());
 
-        $userFactory = $this->createMock('Hslavich\OneloginSamlBundle\Security\User\SamlUserFactoryInterface');
+        $userFactory = $this->createMock('AE\OneLoginSamlBundle\Security\User\SamlUserFactoryInterface');
         $userFactory->expects($this->once())->method('createUser')->willReturn($user);
 
         $entityManager = $this->createMock('Doctrine\ORM\EntityManagerInterface', array('persist', 'flush'));
@@ -86,7 +87,7 @@ class SamlProviderTest extends \PHPUnit_Framework_TestCase
 
     protected function getSamlToken()
     {
-        $token = $this->createMock('Hslavich\OneloginSamlBundle\Security\Authentication\Token\SamlToken');
+        $token = $this->createMock('AE\OneLoginSamlBundle\Security\Authentication\Token\SamlToken');
         $token->expects($this->once())->method('getUsername')->willReturn('admin');
         $token->method('getAttributes')->willReturn(array('foo' => 'bar'));
 

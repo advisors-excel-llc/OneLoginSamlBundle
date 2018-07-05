@@ -1,11 +1,11 @@
 <?php
 
-namespace Hslavich\OneloginSamlBundle\Tests\DependencyInjection\Security\Provider;
+namespace AE\OneLoginSamlBundle\Tests\DependencyInjection\Security\Provider;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
-use Hslavich\OneloginSamlBundle\DependencyInjection\Security\Factory\SamlUserProviderFactory;
-use Hslavich\OneloginSamlBundle\Tests\TestUser;
+use AE\OneLoginSamlBundle\DependencyInjection\Security\Factory\SamlUserProviderFactory;
+use AE\OneLoginSamlBundle\Tests\TestUser;
 
 class SamlUserProviderFactoryTest extends \PHPUnit_Framework_TestCase
 {

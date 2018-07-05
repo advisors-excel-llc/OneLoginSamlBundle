@@ -1,8 +1,8 @@
 <?php
 
-namespace Hslavich\OneloginSamlBundle\Tests\Firewall;
+namespace AE\OneLoginSamlBundle\Tests\Firewall;
 
-use Hslavich\OneloginSamlBundle\Security\Firewall\SamlListener;
+use AE\OneLoginSamlBundle\Security\Firewall\SamlListener;
 use Symfony\Component\HttpFoundation\Request;
 
 class SamlProviderTest extends \PHPUnit_Framework_TestCase
@@ -100,7 +100,7 @@ class SamlProviderTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(true))
         ;
 
-        $reflection = new \ReflectionClass('Hslavich\OneloginSamlBundle\Security\Firewall\SamlListener');
+        $reflection = new \ReflectionClass('AE\OneLoginSamlBundle\Security\Firewall\SamlListener');
         $params = $reflection->getConstructor()->getParameters();
         $param = $params[0];
         $this->tokenStorage = $this->createMock($param->getClass()->name);

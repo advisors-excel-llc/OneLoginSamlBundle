@@ -22,7 +22,6 @@ class Configuration implements ConfigurationInterface
         $rootNode    = $treeBuilder->root('ae_saml_sp');
 
         $rootNode
-            ->useAttributeAsKey('id')
             ->arrayPrototype()
                 ->children()
                     ->booleanNode('strict')->end()
@@ -155,7 +154,7 @@ class Configuration implements ConfigurationInterface
     protected function getContactPersonNode()
     {
         $builder = new TreeBuilder();
-        $node    = $builder->root('security');
+        $node    = $builder->root('contactPerson');
 
         $node
             ->children()

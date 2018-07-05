@@ -22,6 +22,6 @@
         "phpunit/phpunit": "~5.7"
     },
     "autoload": {
-        "psr-4": { "AE\\OneLoginSamlBundle\\": "src/" }
+        "psr-4": { "AE\\OneLoginSamlBundle\\": "src/AE/OneLoginSamlBundle/" }
     }
 }

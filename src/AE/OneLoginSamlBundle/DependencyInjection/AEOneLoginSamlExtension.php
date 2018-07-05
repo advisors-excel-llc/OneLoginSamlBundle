@@ -25,21 +25,21 @@ class AEOneLoginSamlExtension extends Extension
         $configuration = new Configuration();
         $config        = $this->processConfiguration($configuration, $configs);
 
-        foreach ($config['ae_saml_sp'] as $conf) {
-            $this->createOneLoginAuth($container, $conf);
-            $this->createlSamlLogoutListener($container, $conf['id']);
+        foreach ($config as $id => $conf) {
+            $this->createOneLoginAuth($container, $id, $conf);
+            $this->createlSamlLogoutListener($container, $id);
         }
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
     }
 
-    private function createOneLoginAuth(ContainerBuilder $container, array $config)
+    private function createOneLoginAuth(ContainerBuilder $container, $id, array $config)
     {
         $def = new Definition(\OneLogin_Saml2_Auth::class, [$config]);
         $def->setPrivate(false);
 
-        $container->setDefinition("ae_onelogin_saml.${config['id']}.auth", $def);
+        $container->setDefinition("ae_onelogin_saml.$id.auth", $def);
     }
 
     private function createlSamlLogoutListener(ContainerBuilder $container, $cid)

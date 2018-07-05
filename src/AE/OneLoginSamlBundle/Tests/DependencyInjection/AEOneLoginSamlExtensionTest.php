@@ -1,19 +1,20 @@
 <?php
 
-namespace Hslavich\OneloginSamlBundle\Tests\DependencyInjection;
+namespace AE\OneLoginSamlBundle\Tests\DependencyInjection;
 
-use Hslavich\OneloginSamlBundle\DependencyInjection\HslavichOneloginSamlExtension;
+use AE\OneLoginSamlBundle\DependencyInjection\AEOneLoginSamlExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Yaml\Parser;
 
-class HslavichOneloginSamlExtensionTest extends \PHPUnit_Framework_TestCase
+class AEOneLoginSamlExtensionTest extends \PHPUnit_Framework_TestCase
 {
+    protected $container;
     protected $config;
 
     public function testLoadIdpSettings()
     {
         $this->createConfig();
-        $settings = $this->config->getParameter('hslavich_onelogin_saml.settings');
+        $settings = $this->config['default'];
 
         $this->assertEquals('http://id.example.com/saml2/idp/metadata.php', $settings['idp']['entityId']);
         $this->assertEquals('http://id.example.com/saml2/idp/SSOService.php', $settings['idp']['singleSignOnService']['url']);
@@ -30,7 +31,7 @@ class HslavichOneloginSamlExtensionTest extends \PHPUnit_Framework_TestCase
     public function testLoadSpSettings()
     {
         $this->createConfig();
-        $settings = $this->config->getParameter('hslavich_onelogin_saml.settings');
+        $settings = $this->config['default'];
 
         $this->assertEquals('http://myapp.com/app_dev.php/saml/metadata', $settings['sp']['entityId']);
         $this->assertEquals('sp_privateKeyData', $settings['sp']['privateKey']);
@@ -45,7 +46,7 @@ class HslavichOneloginSamlExtensionTest extends \PHPUnit_Framework_TestCase
     public function testLoadSecuritySettings()
     {
         $this->createConfig();
-        $settings = $this->config->getParameter('hslavich_onelogin_saml.settings');
+        $settings = $this->config['default'];
 
         $this->assertFalse($settings['security']['nameIdEncrypted']);
         $this->assertFalse($settings['security']['authnRequestsSigned']);
@@ -63,7 +64,7 @@ class HslavichOneloginSamlExtensionTest extends \PHPUnit_Framework_TestCase
     public function testLoadBasicSettings()
     {
         $this->createConfig();
-        $settings = $this->config->getParameter('hslavich_onelogin_saml.settings');
+        $settings = $this->config['default'];
 
         $this->assertTrue($settings['strict']);
         $this->assertFalse($settings['debug']);
@@ -72,7 +73,7 @@ class HslavichOneloginSamlExtensionTest extends \PHPUnit_Framework_TestCase
     public function testLoadOrganizationSettings()
     {
         $this->createConfig();
-        $settings = $this->config->getParameter('hslavich_onelogin_saml.settings');
+        $settings = $this->config['default'];
 
         $this->assertEquals('Example', $settings['organization']['en']['name']);
         $this->assertEquals('Example', $settings['organization']['en']['displayname']);
@@ -82,7 +83,7 @@ class HslavichOneloginSamlExtensionTest extends \PHPUnit_Framework_TestCase
     public function testLoadContactSettings()
     {
         $this->createConfig();
-        $settings = $this->config->getParameter('hslavich_onelogin_saml.settings');
+        $settings = $this->config['default'];
 
         $this->assertEquals('Tech User', $settings['contactPerson']['technical']['givenName']);
         $this->assertEquals('techuser@example.com', $settings['contactPerson']['technical']['emailAddress']);
@@ -92,66 +93,67 @@ class HslavichOneloginSamlExtensionTest extends \PHPUnit_Framework_TestCase
 
     protected function createConfig()
     {
-        $this->config = new ContainerBuilder();
-        $loader = new HslavichOneloginSamlExtension();
-        $config = $this->getConfig();
-        $loader->load(array($config), $this->config);
+        $this->container = new ContainerBuilder();
+        $loader          = new AEOneLoginSamlExtension();
+        $this->config    = $this->getConfig();
+        $loader->load(array($this->config), $this->container);
     }
 
     protected function getConfig()
     {
         $yaml = <<<EOF
-idp:
-    entityId: 'http://id.example.com/saml2/idp/metadata.php'
-    singleSignOnService:
-        url: 'http://id.example.com/saml2/idp/SSOService.php'
-        binding: 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect'
-    singleLogoutService:
-        url: 'http://id.example.com/saml2/idp/SingleLogoutService.php'
-        binding: 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect'
-    x509cert: 'idp_x509certdata'
-    certFingerprint: '43:51:43:a1:b5:fc:8b:b7:0a:3a:a9:b1:0f:66:73:a8'
-    certFingerprintAlgorithm: 'sha1'
-    x509certMulti:
-        signing: ['<cert1-string>']
-        encryption: ['<cert2-string>']
-sp:
-    entityId: 'http://myapp.com/app_dev.php/saml/metadata'
-    privateKey: 'sp_privateKeyData'
-    x509cert: 'sp_x509certdata'
-    NameIDFormat: 'urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress'
-    assertionConsumerService:
-        url: 'http://myapp.com/app_dev.php/saml/acs'
-        binding: 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST'
-    singleLogoutService:
-        url: 'http://myapp.com/app_dev.php/saml/logout'
-        binding: 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect'
-strict: true
-debug: false
-security:
-    nameIdEncrypted:       false
-    authnRequestsSigned:   false
-    logoutRequestSigned:   false
-    logoutResponseSigned:  false
-    wantMessagesSigned:    false
-    wantAssertionsSigned:  false
-    wantNameIdEncrypted:   false
-    requestedAuthnContext: true
-    signMetadata: false
-    wantXMLValidation: false
-    signatureAlgorithm: 'http://www.w3.org/2000/09/xmldsig#rsa-sha1'
-contactPerson:
-    technical:
-        givenName: 'Tech User'
-        emailAddress: 'techuser@example.com'
-    support:
-        givenName: 'Support User'
-        emailAddress: 'supportuser@example.com'
-organization:
-    en:
-        name: 'Example'
-        displayname: 'Example'
-        url: 'http://example.com'
+default:
+    idp:
+        entityId: 'http://id.example.com/saml2/idp/metadata.php'
+        singleSignOnService:
+            url: 'http://id.example.com/saml2/idp/SSOService.php'
+            binding: 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect'
+        singleLogoutService:
+            url: 'http://id.example.com/saml2/idp/SingleLogoutService.php'
+            binding: 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect'
+        x509cert: 'idp_x509certdata'
+        certFingerprint: '43:51:43:a1:b5:fc:8b:b7:0a:3a:a9:b1:0f:66:73:a8'
+        certFingerprintAlgorithm: 'sha1'
+        x509certMulti:
+            signing: ['<cert1-string>']
+            encryption: ['<cert2-string>']
+    sp:
+        entityId: 'http://myapp.com/app_dev.php/saml/metadata'
+        privateKey: 'sp_privateKeyData'
+        x509cert: 'sp_x509certdata'
+        NameIDFormat: 'urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress'
+        assertionConsumerService:
+            url: 'http://myapp.com/app_dev.php/saml/acs'
+            binding: 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST'
+        singleLogoutService:
+            url: 'http://myapp.com/app_dev.php/saml/logout'
+            binding: 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect'
+    strict: true
+    debug: false
+    security:
+        nameIdEncrypted:       false
+        authnRequestsSigned:   false
+        logoutRequestSigned:   false
+        logoutResponseSigned:  false
+        wantMessagesSigned:    false
+        wantAssertionsSigned:  false
+        wantNameIdEncrypted:   false
+        requestedAuthnContext: true
+        signMetadata: false
+        wantXMLValidation: false
+        signatureAlgorithm: 'http://www.w3.org/2000/09/xmldsig#rsa-sha1'
+    contactPerson:
+        technical:
+            givenName: 'Tech User'
+            emailAddress: 'techuser@example.com'
+        support:
+            givenName: 'Support User'
+            emailAddress: 'supportuser@example.com'
+    organization:
+        en:
+            name: 'Example'
+            displayname: 'Example'
+            url: 'http://example.com'
 EOF;
         $parser = new Parser();
 
@@ -160,6 +162,6 @@ EOF;
 
     protected function tearDown()
     {
-        unset($this->config);
+        unset($this->container);
     }
 }

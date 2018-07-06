@@ -101,10 +101,9 @@ security:
                 config: default
                 # Match SAML attribute 'uid' with username.
                 # Uses getNameId() method by default.
-                username_attribute: 
-                # check_path and login_path don't need to be specified unless overridding
-                # check_path: /saml/default/acs
-                # login_path: /saml/default/login
+                username_attribute:
+                check_path: /saml/default/acs
+                login_path: /saml/default/login
             logout:
                 # Path should be /saml/[CONFIG NAME]/logout
                 path: /saml/default/logout

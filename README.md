@@ -29,7 +29,7 @@ Configuration
 
 Configure SAML metadata in `app/config/config.yml`. Check https://github.com/onelogin/php-saml#settings for more info.
 ``` yml
-ae_onelogin_saml:
+ae_one_login_saml:
     # default is the config name, but can be anything. This is used in firewall and route config
     default:
         # Basic settings

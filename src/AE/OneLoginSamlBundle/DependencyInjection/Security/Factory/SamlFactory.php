@@ -68,8 +68,9 @@ class SamlFactory extends AbstractFactory
             $providerId,
             new $definitionClassname('ae_onelogin_saml.saml_provider')
         )
-                                         ->replaceArgument(0, new Reference($userProviderId))
-                                         ->addArgument(
+                                         ->setArgument(0, new Reference($userProviderId))
+                                         ->setArgument(
+                                             1,
                                              [
                                                  'persist_user' => $config['persist_user'],
                                              ]

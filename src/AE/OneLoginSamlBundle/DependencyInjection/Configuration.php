@@ -22,6 +22,7 @@ class Configuration implements ConfigurationInterface
         $rootNode    = $treeBuilder->root('ae_onelogin_saml');
 
         $rootNode
+            ->useAttributeAsKey('id')
             ->arrayPrototype()
                 ->children()
                     ->booleanNode('strict')->end()

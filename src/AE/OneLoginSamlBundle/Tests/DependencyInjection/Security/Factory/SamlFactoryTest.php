@@ -94,8 +94,8 @@ class SamlFactoryTest extends \PHPUnit_Framework_TestCase
         $providerDefinition = $container->getDefinition('security.authentication.provider.saml.test_firewall');
         $this->assertEquals(
             [
-                'index_0' => new Reference('my_user_provider'),
-                0         => ['persist_user' => false],
+                0 => new Reference('my_user_provider'),
+                1 => ['persist_user' => false],
             ],
             $providerDefinition->getArguments()
         );

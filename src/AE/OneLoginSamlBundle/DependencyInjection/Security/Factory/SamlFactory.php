@@ -139,7 +139,7 @@ class SamlFactory extends AbstractFactory
     }
 
     /**
-     * @param $container
+     * @param ContainerBuilder $container
      * @param $id
      * @param $config
      */
@@ -148,12 +148,6 @@ class SamlFactory extends AbstractFactory
         if ($container->hasDefinition('security.logout_listener.'.$id)) {
             $logoutListener = $container->getDefinition('security.logout_listener.'.$id);
             $samlListenerId = "ae_onelogin_saml.${config['config']}.saml_logout";
-
-            $definitionClassname = $this->getDefinitionClassname();
-            $container
-                ->setDefinition($samlListenerId, new $definitionClassname('saml.security.http.logout'))
-                ->replaceArgument(2, array_intersect_key($config, $this->options))
-            ;
             $logoutListener->addMethodCall('addHandler', [new Reference($samlListenerId)]);
         }
     }

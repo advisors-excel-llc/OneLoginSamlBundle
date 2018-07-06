@@ -19,7 +19,7 @@ class SamlFactory extends AbstractFactory
         $this->addOption('token_factory');
         $this->addOption('persist_user', false);
 
-        $this->defaultFailureHandlerOptions['login_path'];
+        $this->defaultFailureHandlerOptions['login_path'] = '/saml/login';
     }
 
     /**
@@ -102,7 +102,8 @@ class SamlFactory extends AbstractFactory
             $config['check_path'] = "/saml/${config['config']}/acs";
         }
 
-        if (!array_key_exists('login_path', $config) || strlen($config['login_path']) == 0) {
+        if (!array_key_exists('login_path', $config) || strlen($config['login_path']) == 0
+            || $config['login_path'] === $this->defaultFailureHandlerOptions['login_path']) {
             $config['login_path'] = "/saml/${config['config']}/login";
         }
 

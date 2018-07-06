@@ -110,7 +110,10 @@ class SamlFactory extends AbstractFactory
         $this->createLogoutHandler($container, $id, $config);
 
         $container->getDefinition($listenerId)
-                  ->addMethodCall('setOneLoginAuth', ["ae_onelogin_saml.${config['config']}.auth"])
+                  ->addMethodCall(
+                      'setOneLoginAuth',
+                      [new Reference("ae_onelogin_saml.${config['config']}.auth")]
+                  )
         ;
 
         return $listenerId;

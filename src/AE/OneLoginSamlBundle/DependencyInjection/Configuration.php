@@ -18,8 +18,8 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode    = $treeBuilder->root('ae_onelogin_saml');
+        $treeBuilder = new TreeBuilder('ae_onelogin_saml');
+        $rootNode    = $treeBuilder->getRootNode();
 
         $rootNode
             ->useAttributeAsKey('id')
@@ -41,8 +41,8 @@ class Configuration implements ConfigurationInterface
 
     protected function getIdpNode()
     {
-        $builder = new TreeBuilder();
-        $node    = $builder->root('idp');
+        $builder = new TreeBuilder('idp');
+        $node    = $builder->getRootNode();
 
         $node
             ->children()
@@ -80,8 +80,8 @@ class Configuration implements ConfigurationInterface
 
     protected function getSpNode()
     {
-        $builder = new TreeBuilder();
-        $node    = $builder->root('sp');
+        $builder = new TreeBuilder('sp');
+        $node    = $builder->getRootNode();
 
         $node
             ->children()
@@ -100,7 +100,7 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('serviceName')->end()
                         ->scalarNode('serviceDescription')->end()
                         ->arrayNode('requestedAttributes')
-                            ->prototype('array')
+                            ->arrayPrototype()
                                 ->children()
                                     ->scalarNode('name')->end()
                                     ->booleanNode('isRequired')->defaultValue(false)->end()
@@ -126,8 +126,8 @@ class Configuration implements ConfigurationInterface
 
     protected function getSecurityNode()
     {
-        $builder = new TreeBuilder();
-        $node    = $builder->root('security');
+        $builder = new TreeBuilder('security');
+        $node    = $builder->getRootNode();
 
         $node
             ->children()
@@ -154,8 +154,8 @@ class Configuration implements ConfigurationInterface
 
     protected function getContactPersonNode()
     {
-        $builder = new TreeBuilder();
-        $node    = $builder->root('contactPerson');
+        $builder = new TreeBuilder('contactPerson');
+        $node    = $builder->getRootNode();
 
         $node
             ->children()
@@ -179,8 +179,8 @@ class Configuration implements ConfigurationInterface
 
     protected function getOrganizationNode()
     {
-        $builder = new TreeBuilder();
-        $node    = $builder->root('organization');
+        $builder = new TreeBuilder('organization');
+        $node    = $builder->getRootNode();
 
         $node
             ->children()

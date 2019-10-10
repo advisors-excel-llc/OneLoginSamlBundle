@@ -2,6 +2,7 @@
 
 namespace AE\OneLoginSamlBundle\Tests\Firewall;
 
+use OneLogin\Saml2\Auth;
 use AE\OneLoginSamlBundle\Security\Firewall\SamlListener;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -20,7 +21,7 @@ class SamlProviderTest extends \PHPUnit_Framework_TestCase
 
         $attributes = array('uid' => array('username_uid'));
 
-        $onelogin = $this->getMockBuilder('OneLogin_Saml2_Auth')->disableOriginalConstructor()->getMock();
+        $onelogin = $this->getMockBuilder(Auth::class)->disableOriginalConstructor()->getMock();
         $onelogin->expects($this->once())->method('processResponse');
         $onelogin
             ->expects($this->once())
@@ -29,14 +30,14 @@ class SamlProviderTest extends \PHPUnit_Framework_TestCase
         ;
         $listener->setOneLoginAuth($onelogin);
 
-        $listener->handle($this->event);
+        $listener->__invoke($this->event);
     }
 
     public function testHandleValidAuthenticationWithEmptyOptions()
     {
         $listener = $this->getListener(array());
 
-        $onelogin = $this->getMockBuilder('OneLogin_Saml2_Auth')->disableOriginalConstructor()->getMock();
+        $onelogin = $this->getMockBuilder(Auth::class)->disableOriginalConstructor()->getMock();
         $onelogin->expects($this->once())->method('processResponse');
         $onelogin
             ->expects($this->once())
@@ -50,7 +51,7 @@ class SamlProviderTest extends \PHPUnit_Framework_TestCase
         ;
         $listener->setOneLoginAuth($onelogin);
 
-        $listener->handle($this->event);
+        $listener->__invoke($this->event);
     }
 
     protected function getListener($options = array())
@@ -86,7 +87,7 @@ class SamlProviderTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(true))
         ;
 
-        $this->event = $this->createMock('Symfony\Component\HttpKernel\Event\GetResponseEvent', array(), array(), '', false);
+        $this->event = $this->createMock('Symfony\Component\HttpKernel\Event\RequestEvent');
         $this->event
             ->expects($this->any())
             ->method('getRequest')

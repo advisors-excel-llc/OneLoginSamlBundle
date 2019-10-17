@@ -2,6 +2,7 @@
 
 namespace AE\OneLoginSamlBundle\Security\Firewall;
 
+use OneLogin\Saml2\Auth;
 use AE\OneLoginSamlBundle\Security\Authentication\Token\SamlToken;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,14 +13,14 @@ use Symfony\Component\Security\Http\Firewall\AbstractAuthenticationListener;
 class SamlListener extends AbstractAuthenticationListener
 {
     /**
-     * @var \OneLogin_Saml2_Auth
+     * @var Auth
      */
     protected $oneLoginAuth;
 
     /**
-     * @param \OneLogin_Saml2_Auth $oneLoginAuth
+     * @param Auth $oneLoginAuth
      */
-    public function setOneLoginAuth(\OneLogin_Saml2_Auth $oneLoginAuth)
+    public function setOneLoginAuth(Auth $oneLoginAuth)
     {
         $this->oneLoginAuth = $oneLoginAuth;
     }

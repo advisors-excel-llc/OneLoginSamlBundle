@@ -4,7 +4,6 @@ namespace AE\OneLoginSamlBundle\DependencyInjection\Security\Factory;
 
 use Symfony\Bundle\SecurityBundle\DependencyInjection\Security\Factory\AbstractFactory;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\Reference;
 
@@ -161,6 +160,6 @@ class SamlFactory extends AbstractFactory
      */
     private function getDefinitionClassname()
     {
-        return class_exists(ChildDefinition::class) ? ChildDefinition::class : DefinitionDecorator::class;
+        return ChildDefinition::class;
     }
 }

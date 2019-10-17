@@ -2,11 +2,11 @@
 
 namespace AE\OneLoginSamlBundle\Security\Authentication\Provider;
 
-use AE\OneLoginSamlBundle\Security\Authentication\Token\SamlToken;
 use AE\OneLoginSamlBundle\Security\Authentication\Token\SamlTokenFactoryInterface;
 use AE\OneLoginSamlBundle\Security\Authentication\Token\SamlTokenInterface;
 use AE\OneLoginSamlBundle\Security\User\SamlUserFactoryInterface;
 use AE\OneLoginSamlBundle\Security\User\SamlUserInterface;
+use Doctrine\ORM\EntityManager;
 use Symfony\Component\Security\Core\Authentication\Provider\AuthenticationProviderInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -16,8 +16,11 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 class SamlProvider implements AuthenticationProviderInterface
 {
     private $userProvider;
+    /** @var SamlUserFactoryInterface */
     private $userFactory;
+    /** @var SamlTokenFactoryInterface */
     private $tokenFactory;
+    /** @var EntityManager */
     private $entityManager;
     private $options;
 
@@ -67,7 +70,7 @@ class SamlProvider implements AuthenticationProviderInterface
         return $token instanceof SamlTokenInterface;
     }
 
-    protected function retrieveUser($token)
+    protected function retrieveUser(TokenInterface $token)
     {
         try {
             return $this->userProvider->loadUserByUsername($token->getUsername());

@@ -3,6 +3,8 @@
 namespace AE\OneLoginSamlBundle\Security\Logout;
 
 use AE\OneLoginSamlBundle\Security\Authentication\Token\SamlTokenInterface;
+use OneLogin\Saml2\Auth;
+use OneLogin\Saml2\Error;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -10,9 +12,12 @@ use Symfony\Component\Security\Http\Logout\LogoutHandlerInterface;
 
 class SamlLogoutHandler implements LogoutHandlerInterface
 {
+    /**
+     * @var Auth
+     */
     protected $samlAuth;
 
-    public function __construct(\OneLogin_Saml2_Auth $samlAuth)
+    public function __construct(Auth $samlAuth)
     {
         $this->samlAuth = $samlAuth;
     }
@@ -34,7 +39,7 @@ class SamlLogoutHandler implements LogoutHandlerInterface
 
         try {
             $this->samlAuth->processSLO();
-        } catch (\OneLogin_Saml2_Error $e) {
+        } catch (Error $e) {
             $sessionIndex = $token->hasAttribute('sessionIndex') ? $token->getAttribute('sessionIndex') : null;
             $this->samlAuth->logout(null, array(), $token->getUsername(), $sessionIndex);
         }

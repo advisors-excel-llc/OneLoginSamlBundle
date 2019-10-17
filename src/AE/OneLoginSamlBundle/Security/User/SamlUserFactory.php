@@ -30,7 +30,7 @@ class SamlUserFactory implements SamlUserFactoryInterface
         return $user;
     }
 
-    protected function getPropertyValue($token, $attribute)
+    protected function getPropertyValue(SamlTokenInterface $token, $attribute)
     {
         if (is_string($attribute) && '$' == substr($attribute, 0, 1)) {
             $attributes = $token->getAttributes();

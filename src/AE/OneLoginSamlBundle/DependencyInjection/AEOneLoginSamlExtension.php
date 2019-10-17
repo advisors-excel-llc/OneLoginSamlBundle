@@ -9,6 +9,7 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
+use OneLogin\Saml2\Auth;
 
 /**
  * This is the class that loads and manages your bundle configuration
@@ -36,7 +37,7 @@ class AEOneLoginSamlExtension extends Extension
 
     private function createOneLoginAuth(ContainerBuilder $container, $id, array $config)
     {
-        $def = new Definition(\OneLogin_Saml2_Auth::class, [$config]);
+        $def = new Definition(Auth::class, [$config]);
         $def->setPrivate(false);
 
         $container->setDefinition("ae_onelogin_saml.$id.auth", $def);

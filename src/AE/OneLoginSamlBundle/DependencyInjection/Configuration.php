@@ -27,6 +27,7 @@ class Configuration implements ConfigurationInterface
                 ->children()
                     ->booleanNode('strict')->end()
                     ->booleanNode('debug')->end()
+                    ->scalarNode('baseurl')->end()
                     ->append($this->getIdpNode())
                     ->append($this->getSpNode())
                     ->append($this->getSecurityNode())

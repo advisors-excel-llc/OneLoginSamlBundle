@@ -2,6 +2,7 @@
 
 namespace AE\OneLoginSamlBundle\Controller;
 
+use OneLogin\Saml2\Utils;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Security;
@@ -31,7 +32,9 @@ class SamlController extends AbstractController
             throw new \RuntimeException($error->getMessage());
         }
 
-        $this->get("ae_onelogin_saml.$saml.auth")->login();
+        $auth = $this->get("ae_onelogin_saml.$saml.auth");
+        Utils::setBaseUrl($auth->getSettings()->getBaseUrl());
+        $auth->login();
     }
 
     /**

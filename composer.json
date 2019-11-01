@@ -1,6 +1,5 @@
 {
     "name": "ae/oneloginsaml-bundle",
-    "version": "2.1.0",
     "type": "symfony-bundle",
     "description": "OneLogin SAML Bundle for Symfony2",
     "keywords": ["onelogin", "saml", "sso"],
